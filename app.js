@@ -26,6 +26,9 @@ class Player {
             case 2:
                 this._play = 'Scissors';
                 break;
+            default:
+                alert('Error! Please enter "rock", "paper", or "scissors"')
+                break;
         }
     }
 
@@ -57,6 +60,7 @@ class Game {
 
         let roundWinner;
         let roundLoser;
+        console.log(this.playerOne.play, this.playerTwo.play)
 
         if((this.playerOne.play === 'Rock' && this.playerTwo.play === 'Scissors') || (this.playerOne.play === 'Paper' && this.playerTwo.play === 'Rock') || (this.playerOne.play === 'Scissors' && this.playerTwo.play === 'Paper')) {
             roundWinner = this.playerOne;
@@ -66,10 +70,12 @@ class Game {
             roundLoser = this.playerOne;
         } else {
             this.results.push('Draw!');
+            alert('Draw!');
             return; // Exits early as 'roundWinner' and 'roundLoser' aren't defined and would cause error in next step
         }
         roundWinner.incrementScore();
         this.results.push(`${roundWinner.play} beats ${roundLoser.play}. ${roundWinner.name} wins!`);
+        alert(`${roundWinner.play} beats ${roundLoser.play}. ${roundWinner.name} wins!`);
     }
 
     playGame(rounds = this.rounds) {
@@ -78,11 +84,9 @@ class Game {
         this.playerTwo.resetScore();
         this.resetResults();
         while(roundsLeft-- > 0) {
-            this.playRound();
+            this.playRound(prompt('Rock, paper or scissors?', 'rock'));
         }
-        console.log(this.playerOne.name + ': ' + this.playerOne.score);
-        console.log(this.playerTwo.name + ': ' + this.playerTwo.score);
-        console.log(this.results);
+        alert(`Score:\n${this.playerOne.name} - ${this.playerOne.score}     ${this.playerTwo.name} - ${this.playerTwo.score}`)
     }
 }
 
@@ -91,3 +95,5 @@ const computer = new Player('Computer');
 const player = new Player('Player');
 
 const game1 = new Game([player, computer], 5);
+
+game1.playGame();
