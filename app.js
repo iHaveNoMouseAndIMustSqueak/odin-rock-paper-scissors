@@ -1,4 +1,4 @@
-class Player {
+/*class Player {
     constructor(name) {
         this._name = name;
         this._play = '';
@@ -96,4 +96,14 @@ const player = new Player('Player');
 
 const game1 = new Game([player, computer], 5);
 
-game1.playGame();
+game1.playGame();*/
+
+
+const playerSelectButton = document.querySelector('#player-choice').addEventListener('click', e => {
+    if(e.target.type === 'button') {
+        const displayPlayerSelection = document.querySelector('#display-results .player');
+        displayPlayerSelection.classList = 'player'; //Resets class list to just .player
+        displayPlayerSelection.classList.add(e.target.value);
+        return e.target.value;
+    }
+});

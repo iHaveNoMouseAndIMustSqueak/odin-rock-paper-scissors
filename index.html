@@ -3,8 +3,24 @@
     <head>
         <meta charset="utf-8">
         <title>Rock Paper Scissors</title>
+        <link rel='stylesheet' type='text/css' href='normalize.css'>
+        <link rel='stylesheet' type='text/css' href='main.css'>
     </head>
     <body>
-        <script src='app.js'></script>
+        <header>
+            <h1>Rock Paper Scissors</h1>
+        </header>
+        <main>
+            <section id='display-results'>
+                <div class='player'></div>
+                <div class='computer'></div>
+            </section>
+            <form id='player-choice'>
+                <button type='button' name='rock' value='rock'>Rock</button>
+                <button type='button' name='paper' value='paper'>Paper</button>
+                <button type='button' name='scissors' value='scissors'>Scissors</button>
+            </form>
+        </main>
+    <script src='app.js'></script>
     </body>
 </html>
