@@ -1,5 +1,6 @@
 :root {
     --vertical-spacing: 3em;
+    --single-line: 1.5em;
 }
 
 /* Makes padding and borders make more sense */
@@ -26,18 +27,26 @@ header {
     margin-top: var(--vertical-spacing);
 }
 
-h1 {
+h1, p {
     margin: 0;
 }
 
 #display-results {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2em;
+    grid-template-rows: auto var(--single-line);
+    row-gap: var(--vertical-spacing);
     margin-top: var(--vertical-spacing);
 }
 
-.computer {
-    margin-left: 4em;
+#display-results p {
+    grid-column: span 2;
+    justify-self: center;
+}
+
+.player {
+    justify-self: end;
 }
 
 .player, .computer {
@@ -62,5 +71,5 @@ h1 {
 #player-choice {
     display: flex;
     justify-content: center;
-    margin-top: 6em;
+    margin-top: var(--vertical-spacing);
 }

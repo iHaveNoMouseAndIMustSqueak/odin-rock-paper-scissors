@@ -12,17 +12,11 @@ class Player {
     set choice(choice) {this._choice = choice}
     set score(score) {this._score = score}
 
-    playerChoice(e) {
-        /*playerChoiceListener(e => {
-            const displayPlayerSelection = document.querySelector('#display-results .player');
-            displayPlayerSelection.classList = 'player'; //Resets class list to just .player
-            displayPlayerSelection.classList.add(e.target.value);
-            this.choice = e.target.value;
-        })*/
+    playerChoice(button) {
         const displayPlayerSelection = document.querySelector('#display-results .player');
         displayPlayerSelection.classList = 'player'; //Resets class list to just .player
-        displayPlayerSelection.classList.add(e.target.value);
-        this.choice = e.target.value;
+        displayPlayerSelection.classList.add(button);
+        this.choice = button;
     }
 
     incrementScore() {
@@ -40,26 +34,6 @@ class Computer extends Player {
     }
 
     playerChoice() {
-        /*playerChoiceListener(e => {
-            const randomNumber = Math.floor(Math.random()*3);
-            switch (randomNumber) {
-                case 0:
-                    this.choice = 'rock';
-                    break;
-                case 1:
-                    this.choice = 'paper';
-                    break;
-                case 2:
-                    this.choice = 'scissors';
-                    break;
-                default:
-                    alert('Error!')
-                    break;
-            }
-            const displayComputerSelection = document.querySelector('#display-results .computer');
-            displayComputerSelection.classList = 'computer'; //Resets class list to just .computer
-            displayComputerSelection.classList.add(this.choice);
-        })*/
         const randomNumber = Math.floor(Math.random()*3);
         switch (randomNumber) {
             case 0:
@@ -86,8 +60,6 @@ class Game {
         this._rounds = rounds;
         this._results = [];
         this._players = [...players];
-        //this._playerOne = players[0];
-        //this._playerTwo = players[1];
     }
 
     get rounds() {return this._rounds}
@@ -100,8 +72,10 @@ class Game {
     resetResults() {this._results = []}
 
     playRound() {
+        const roundSummaryText = document.querySelector('#display-results p');
         let roundWinner;
         let roundLoser;
+        let roundResults;
         if((this.playerOne.choice === 'rock' && this.playerTwo.choice === 'scissors') || (this.playerOne.choice === 'paper' && this.playerTwo.choice === 'rock') || (this.playerOne.choice === 'scissors' && this.playerTwo.choice === 'paper')) {
             roundWinner = this.playerOne;
             roundLoser = this.playerTwo;
@@ -109,13 +83,16 @@ class Game {
             roundWinner = this.playerTwo;
             roundLoser = this.playerOne;
         } else {
-            this.results.push('Draw!');
-            alert('Draw!');
+            roundResults = 'Draw!';
+            this.results.push(roundResults);
+            roundSummaryText.textContent = roundResults;
             return; // Exits early as 'roundWinner' and 'roundLoser' aren't defined and would cause error in next step
         }
         roundWinner.incrementScore();
-        this.results.push(`${roundWinner.choice} beats ${roundLoser.choice}. ${roundWinner.name} wins!`);
-        alert(`${roundWinner.choice} beats ${roundLoser.choice}. ${roundWinner.name} wins!`);
+        roundResults = `${roundWinner.choice} beats ${roundLoser.choice}. ${roundWinner.name} wins!`
+        roundResults = roundResults.charAt(0).toUpperCase() + roundResults.substring(1);
+        this.results.push(roundResults);
+        roundSummaryText.textContent = roundResults;
     }
 }
 
@@ -133,9 +110,9 @@ const computer = new Computer();
 
 const game1 = new Game([player, computer], 5);
 
-// Doesn't work if it's not invoked, obviously
+// Things to run when player presses a button in #player-choice
 playerChoiceListener(e => {
-    player.playerChoice(e);
-    computer.playerChoice(e);
+    player.playerChoice(e.target.value); // Requires e.target.value to know which button was pressed
+    computer.playerChoice();
     game1.playRound();
 })
