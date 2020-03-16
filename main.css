@@ -1,6 +1,7 @@
 :root {
     --vertical-spacing: 3em;
     --single-line: 1.5em;
+    --double-line: 3em;
 }
 
 /* Makes padding and borders make more sense */
@@ -27,7 +28,7 @@ header {
     margin-top: var(--vertical-spacing);
 }
 
-h1, p {
+h1, h2, p {
     margin: 0;
 }
 
@@ -35,12 +36,16 @@ h1, p {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 2em;
-    grid-template-rows: auto var(--single-line);
-    row-gap: var(--vertical-spacing);
+    grid-template-rows: auto auto var(--single-line);
+    row-gap: var(--single-line);
     margin-top: var(--vertical-spacing);
 }
 
-#display-results p {
+#display-results h2 {
+    font-size: 1.5em;
+}
+
+#display-results p, #display-results h2 {
     grid-column: span 2;
     justify-self: center;
 }

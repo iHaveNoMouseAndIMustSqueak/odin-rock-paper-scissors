@@ -64,12 +64,11 @@ class Game {
 
     get rounds() {return this._rounds}
     get results() {return this._results}
-    get players() {return [this._players[0].name, this._players[1].name]}
     get playerOne() {return this._players[0]}
     get playerTwo() {return this._players[1]}
-    get scores() {return [this._players[0].score, this._players[1].score]}
+    get scores() {return [this.playerOne.score, this.playerTwo.score]}
 
-    resetResults() {this._results = []}
+    resetResults() {this.results = []}
 
     playRound() {
         const roundSummaryText = document.querySelector('#display-results p');
@@ -88,7 +87,9 @@ class Game {
             roundSummaryText.textContent = roundResults;
             return; // Exits early as 'roundWinner' and 'roundLoser' aren't defined and would cause error in next step
         }
+        const winnerScore = roundWinner === this.playerOne ? document.querySelector('#player-score') : document.querySelector('#computer-score');
         roundWinner.incrementScore();
+        winnerScore.textContent = roundWinner.score;
         roundResults = `${roundWinner.choice} beats ${roundLoser.choice}. ${roundWinner.name} wins!`
         roundResults = roundResults.charAt(0).toUpperCase() + roundResults.substring(1);
         this.results.push(roundResults);
