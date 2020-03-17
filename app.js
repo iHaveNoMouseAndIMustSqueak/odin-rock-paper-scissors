@@ -3,34 +3,42 @@ class Player {
         this._name = name;
         this._choice = '';
         this._score = 0;
+        this._scoreCounter = document.querySelector('#player-score');
+        this._displaySelection = document.querySelector('#display-results .player');
     }
 
     get name() {return this._name}
     get choice() {return this._choice}
     get score() {return this._score}
+    get scoreCounter() {return this._scoreCounter}
+    get displaySelection() {return this._displaySelection}
 
     set choice(choice) {this._choice = choice}
     set score(score) {this._score = score}
 
-    playerChoice(button) {
-        const displayPlayerSelection = document.querySelector('#display-results .player');
-        displayPlayerSelection.classList = 'player'; //Resets class list to just .player
-        displayPlayerSelection.classList.add(button);
+    playerChoice(button = '') {
+        this.displaySelection.classList = 'player'; //Resets class list to just .player
+        this.displaySelection.classList.add(button);
         this.choice = button;
     }
 
     incrementScore() {
         this.score++;
+        this.scoreCounter.textContent = this.score;
     }
 
     resetScore() {
         this.score = 0;
+        this.scoreCounter.textContent = this.score;
+        this.displaySelection.classList.remove(this.choice);
     }
 }
 
 class Computer extends Player {
     constructor(name = 'Computer') {
         super(name);
+        this._scoreCounter = document.querySelector('#computer-score');
+        this._displaySelection = document.querySelector('#display-results .computer');
     }
 
     playerChoice() {
@@ -46,12 +54,11 @@ class Computer extends Player {
                 this.choice = 'scissors';
                 break;
             default:
-                alert('Error!')
+                this.choice = '';
                 break;
         }
-        const displayComputerSelection = document.querySelector('#display-results .computer');
-        displayComputerSelection.classList = 'computer'; //Resets class list to just .computer
-        displayComputerSelection.classList.add(this.choice);
+        this.displaySelection.classList = 'computer'; //Resets class list to just .computer
+        this.displaySelection.classList.add(this.choice);
     }
 }
 
@@ -64,17 +71,30 @@ class Game {
 
     get rounds() {return this._rounds}
     get results() {return this._results}
+    get players() {return this._players}
     get playerOne() {return this._players[0]}
     get playerTwo() {return this._players[1]}
     get scores() {return [this.playerOne.score, this.playerTwo.score]}
 
-    resetResults() {this.results = []}
+    set rounds(numberOfRounds) {this._rounds = numberOfRounds}
 
-    playRound() {
+    resetGame(rounds = 5) {
+        this._results = [];
+        this.playerOne.resetScore();
+        this.playerTwo.resetScore();
+        this.rounds = rounds;
+    }
+
+    playRound(button) {
+        this.playerOne.playerChoice(button);
+        this.playerTwo.playerChoice();
+
         const roundSummaryText = document.querySelector('#display-results p');
+
         let roundWinner;
         let roundLoser;
         let roundResults;
+
         if((this.playerOne.choice === 'rock' && this.playerTwo.choice === 'scissors') || (this.playerOne.choice === 'paper' && this.playerTwo.choice === 'rock') || (this.playerOne.choice === 'scissors' && this.playerTwo.choice === 'paper')) {
             roundWinner = this.playerOne;
             roundLoser = this.playerTwo;
@@ -87,9 +107,7 @@ class Game {
             roundSummaryText.textContent = roundResults;
             return; // Exits early as 'roundWinner' and 'roundLoser' aren't defined and would cause error in next step
         }
-        const winnerScore = roundWinner === this.playerOne ? document.querySelector('#player-score') : document.querySelector('#computer-score');
         roundWinner.incrementScore();
-        winnerScore.textContent = roundWinner.score;
         roundResults = `${roundWinner.choice} beats ${roundLoser.choice}. ${roundWinner.name} wins!`
         roundResults = roundResults.charAt(0).toUpperCase() + roundResults.substring(1);
         this.results.push(roundResults);
@@ -113,7 +131,12 @@ const game1 = new Game([player, computer], 5);
 
 // Things to run when player presses a button in #player-choice
 playerChoiceListener(e => {
-    player.playerChoice(e.target.value); // Requires e.target.value to know which button was pressed
-    computer.playerChoice();
-    game1.playRound();
-})
+    if(game1.rounds > 0) {
+        game1.playRound(e.target.value); // Requires e.target.value to know which button was pressed
+        game1.rounds--;
+    } else {
+        game1.resetGame(5);
+        document.querySelector('#display-results p').textContent = 'Pick rock, paper or scissors for new game.';
+    }
+});
+
