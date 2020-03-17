@@ -16,7 +16,7 @@ class Player {
     set choice(choice) {this._choice = choice}
     set score(score) {this._score = score}
 
-    playerChoice(button = '') {
+    playerChoice(button) {
         this.displaySelection.classList = 'player'; //Resets class list to just .player
         this.displaySelection.classList.add(button);
         this.choice = button;
@@ -113,15 +113,29 @@ class Game {
         this.results.push(roundResults);
         roundSummaryText.textContent = roundResults;
     }
+
+    playerChoiceListener(callback) {
+        document.querySelector('#player-choice').addEventListener('click', e => {
+            if(e.target.type === 'button') {
+                callback(e);
+            }
+        })
+    }
+
+    playGame() {
+        this.playerChoiceListener(e => {
+            if(this.rounds > 0) {
+                console.log(this)
+                this.playRound(e.target.value); // Requires e.target.value to know which button was pressed
+                this.rounds--;
+            } else {
+                this.resetGame();
+                document.querySelector('#display-results p').textContent = 'Pick rock, paper or scissors for new game.';
+            }
+        })
+    }
 }
 
-const playerChoiceListener = callback => {
-    document.querySelector('#player-choice').addEventListener('click', e => {
-        if(e.target.type === 'button') {
-            callback(e);
-        }
-    })
-}
 
 const player = new Player('Player One');
 
@@ -129,14 +143,4 @@ const computer = new Computer();
 
 const game1 = new Game([player, computer], 5);
 
-// Things to run when player presses a button in #player-choice
-playerChoiceListener(e => {
-    if(game1.rounds > 0) {
-        game1.playRound(e.target.value); // Requires e.target.value to know which button was pressed
-        game1.rounds--;
-    } else {
-        game1.resetGame(5);
-        document.querySelector('#display-results p').textContent = 'Pick rock, paper or scissors for new game.';
-    }
-});
-
+game1.playGame();
