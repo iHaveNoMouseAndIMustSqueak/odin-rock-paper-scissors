@@ -73,8 +73,15 @@ h1, h2, p {
     background: #00f;
 }
 
-#player-choice {
+#player-choice{
     display: flex;
     justify-content: center;
     margin-top: var(--vertical-spacing);
+}
+
+#new-game { /* Change this later */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.75em;
 }

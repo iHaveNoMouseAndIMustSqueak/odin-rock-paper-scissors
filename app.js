@@ -72,18 +72,11 @@ class Game {
     get rounds() {return this._rounds}
     get results() {return this._results}
     get players() {return this._players}
-    get playerOne() {return this._players[0]}
-    get playerTwo() {return this._players[1]}
+    get playerOne() {return this.players[0]}
+    get playerTwo() {return this.players[1]}
     get scores() {return [this.playerOne.score, this.playerTwo.score]}
 
     set rounds(numberOfRounds) {this._rounds = numberOfRounds}
-
-    resetGame(rounds = 5) {
-        this._results = [];
-        this.playerOne.resetScore();
-        this.playerTwo.resetScore();
-        this.rounds = rounds;
-    }
 
     playRound(button) {
         this.playerOne.playerChoice(button);
@@ -128,10 +121,24 @@ class Game {
                 console.log(this)
                 this.playRound(e.target.value); // Requires e.target.value to know which button was pressed
                 this.rounds--;
-            } else {
+            } /*else {
                 this.resetGame();
                 document.querySelector('#display-results p').textContent = 'Pick rock, paper or scissors for new game.';
-            }
+            }*/
+        })
+    }
+
+    resetGame(rounds = 5) {
+        this._results = [];
+        this.playerOne.resetScore();
+        this.playerTwo.resetScore();
+        this.rounds = rounds;
+    }
+
+    newGameListener() {
+        document.querySelector('#new-game').addEventListener('click', e => {
+            this.resetGame()
+            document.querySelector('#display-results p').textContent = 'Pick rock, paper or scissors to start.';
         })
     }
 }
@@ -144,3 +151,4 @@ const computer = new Computer();
 const game1 = new Game([player, computer], 5);
 
 game1.playGame();
+game1.newGameListener();
