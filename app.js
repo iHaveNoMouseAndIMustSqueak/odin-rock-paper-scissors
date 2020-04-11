@@ -88,10 +88,14 @@ class Game {
         let roundLoser;
         let roundResults;
 
-        if((this.playerOne.choice === 'rock' && this.playerTwo.choice === 'scissors') || (this.playerOne.choice === 'paper' && this.playerTwo.choice === 'rock') || (this.playerOne.choice === 'scissors' && this.playerTwo.choice === 'paper')) {
+        if((this.playerOne.choice === 'rock' && this.playerTwo.choice === 'scissors') 
+        || (this.playerOne.choice === 'paper' && this.playerTwo.choice === 'rock') 
+        || (this.playerOne.choice === 'scissors' && this.playerTwo.choice === 'paper')) {
             roundWinner = this.playerOne;
             roundLoser = this.playerTwo;
-        } else if((this.playerTwo.choice === 'rock' && this.playerOne.choice === 'scissors') || (this.playerTwo.choice === 'paper' && this.playerOne.choice === 'rock') || (this.playerTwo.choice === 'scissors' && this.playerOne.choice === 'paper')) {
+        } else if((this.playerTwo.choice === 'rock' && this.playerOne.choice === 'scissors') 
+        || (this.playerTwo.choice === 'paper' && this.playerOne.choice === 'rock') 
+        || (this.playerTwo.choice === 'scissors' && this.playerOne.choice === 'paper')) {
             roundWinner = this.playerTwo;
             roundLoser = this.playerOne;
         } else {
@@ -121,10 +125,9 @@ class Game {
                 console.log(this)
                 this.playRound(e.target.value); // Requires e.target.value to know which button was pressed
                 this.rounds--;
-            } /*else {
-                this.resetGame();
-                document.querySelector('#display-results p').textContent = 'Pick rock, paper or scissors for new game.';
-            }*/
+            } else {
+                document.querySelector('#display-results p').textContent = 'Game over. Press \'New game\' to start again.';
+            }
         })
     }
 
